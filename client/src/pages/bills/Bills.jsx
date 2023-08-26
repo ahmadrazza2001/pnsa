@@ -5,11 +5,12 @@ import Layout from "../../components/Layout";
 import { useReactToPrint } from "react-to-print";
 import { EyeOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
+import {lHost } from "../../host";
 
 const Bills = () => {
   const componentRef = useRef();
   const dispatch = useDispatch();
-  const Lhost = "http://localhost:8080";
+  const Lhost = lHost;
   const [billsData, setBillsData] = useState([]);
   const [popModal, setPopModal] = useState(false);
   const [selectedBill, setSelectedBill] = useState(null);
