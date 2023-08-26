@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({ origin: "http://13.53.54.196:3000" }));
+app.use(cors({ origin: "http://51.20.2.8:3000" }));
 app.use(morgan("dev"));
 app.use(express.json());
 
