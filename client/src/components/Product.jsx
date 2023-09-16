@@ -30,7 +30,14 @@ const Product = ({ product }) => {
     >
       <Meta title={product.name} description={`Rs.${product.price}`} />
       <div className="product-btn">
-        <Button onClick={() => handlerToCart()}>Add To Cart</Button>
+        <Button
+          style={{
+            background: "linear-gradient(45deg, #6C5B7B, #C06C84, #F67280)",
+          }}
+          onClick={() => handlerToCart()}
+        >
+          Add To Cart
+        </Button>
       </div>
     </Card>
   );

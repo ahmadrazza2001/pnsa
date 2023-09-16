@@ -1,88 +1,154 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Input, message } from "antd";
-import { lHost } from "../../host";
-
 import axios from "axios";
+import { lHost } from "../../host";
+import { message } from "antd";
+import "./signup.css";
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handlerSubmit = async (values) => {
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const handlerSubmit = async () => {
     try {
       dispatch({ type: "SHOW_LOADING" });
-
-      // If your server is running on a different port or domain,
-      // provide the full URL. This is an example assuming your server is on port 5000:
-      await axios.post(`${lHost}/api/user/signup`, values);
-
-      message.success("Register Successfully!");
+      await axios.post(`${lHost}/api/user/signup`, formData);
+      message.success("Your account has been created!");
       navigate("/login");
     } catch (error) {
-      message.error("Error!");
+      alert("Error!");
       console.error(error);
     } finally {
       dispatch({ type: "HIDE_LOADING" });
     }
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("auth")) {
-      navigate("/");
-    }
-  }, [navigate]);
-
   return (
-    <div className="form">
-      <h2>Point Of Sale</h2>
-      <p>Signup to a new account</p>
-      <div className="form-group">
-        <Form layout="vertical" onFinish={handlerSubmit}>
-          <Form.Item
-            name="firstName"
-            label="First Name"
-            rules={[
-              { required: true, message: "Please input your first name!" },
-            ]}
-          >
-            <Input placeholder="Enter first name" />
-          </Form.Item>
-          <Form.Item
-            name="lastName"
-            label="Last Name"
-            rules={[
-              { required: true, message: "Please input your last name!" },
-            ]}
-          >
-            <Input placeholder="Enter last name" />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Email Address"
-            rules={[
-              { required: true, message: "Please input your email address!" },
-            ]}
-          >
-            <Input placeholder="Enter Email Address" />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
-            <Input type="password" placeholder="Enter Password" />
-          </Form.Item>
-          <div className="form-btn-add">
-            <Button htmlType="submit" className="add-new">
-              Signup
-            </Button>
-            <Link className="form-other" to="/login">
-              Already have an account? Login now!
-            </Link>
+    <div className="signup-container">
+      <div className="signup-card">
+        <header>
+          <h2>Point Of Sale</h2>
+          <p>Create a new account</p>
+        </header>
+        <main>
+          {step === 1 && (
+            <>
+              <div className="input-container">
+                <label>First Name</label>
+                <input
+                  type="text"
+                  value={formData.firstName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, firstName: e.target.value })
+                  }
+                  placeholder="Enter First Name"
+                />
+              </div>
+              <div className="input-container">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  value={formData.lastName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastName: e.target.value })
+                  }
+                  placeholder="Enter Last Name"
+                />
+              </div>
+            </>
+          )}
+
+          {step === 2 && (
+            <>
+              <div className="input-container">
+                <label>Username</label>
+                <input
+                  type="text"
+                  value={formData.username}
+                  onChange={(e) =>
+                    setFormData({ ...formData, username: e.target.value })
+                  }
+                  placeholder="i.e; abcd_."
+                />
+              </div>
+              <div className="input-container">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  placeholder="Enter Email Address"
+                />
+              </div>
+            </>
+          )}
+
+          {step === 3 && (
+            <>
+              <div className="input-container">
+                <label>Create Password</label>
+                <input
+                  type="password"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  placeholder="Create a strong password"
+                />
+              </div>
+            </>
+          )}
+
+          <div className="button-group">
+            {step !== 1 && (
+              <button className="back-btn" onClick={() => setStep(step - 1)}>
+                Back
+              </button>
+            )}
+            {step === 1 && (
+              <button
+                disabled={!formData.firstName || !formData.lastName}
+                className="next-btn"
+                onClick={() => setStep(step + 1)}
+              >
+                Next
+              </button>
+            )}
+            {step === 2 && (
+              <button
+                disabled={!formData.username || !formData.email}
+                className="next-btn"
+                onClick={() => setStep(step + 1)}
+              >
+                Next
+              </button>
+            )}
+            {step === 3 && (
+              <button
+                disabled={!formData.password}
+                className="submit-btn"
+                onClick={handlerSubmit}
+              >
+                Signup
+              </button>
+            )}
           </div>
-        </Form>
+        </main>
+        <footer>
+          <Link to="/login">Already have an account? Login now!</Link>
+        </footer>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 //for create table into db
 const billsSchema = new mongoose.Schema(
@@ -11,6 +12,11 @@ const billsSchema = new mongoose.Schema(
     tax: { type: Number, required: true },
     paymentMethod: { type: String, required: true },
     cartItems: { type: Array, required: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -6,6 +7,14 @@ const userSchema = new mongoose.Schema({
   },
   lastName: {
     type: String,
+    required: true,
+  },
+  companyName: {
+    type: String,
+  },
+  username: {
+    type: String,
+    unique: true,
     required: true,
   },
   email: {
@@ -18,6 +27,24 @@ const userSchema = new mongoose.Schema({
     required: true,
     minLength: 8,
   },
+  products: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
+  categories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
+  ],
+  bills: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Bills",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

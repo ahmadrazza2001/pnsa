@@ -10,6 +10,11 @@ function isValidLastName(lastName) {
   return minLength.test(lastName);
 }
 
+function isValidUserName(username) {
+  if (!username) return false;
+  const myUserName = /^[a-z0-9._]/;
+  return myUserName.test(username);
+}
 function isValidEmail(email) {
   if (!email) return false;
   const myEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -38,6 +43,7 @@ function isValidPassword(password) {
 module.exports = {
   isValidFirstName,
   isValidLastName,
+  isValidUserName,
   isValidEmail,
   isValidPassword,
 };

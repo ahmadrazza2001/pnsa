@@ -1,10 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const productRoutes = require("../controllers/productController");
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.route("/get-products").get(productRoutes.getProductController);
-router.route("/add-products").post(productRoutes.addProductController);
-router.route("/update-products").put(productRoutes.updateProductController);
-router.route("/delete-products").post(productRoutes.deleteProductController);
+router
+  .route("/get-products")
+  .get(authMiddleware, productRoutes.getProductController);
+router
+  .route("/add-products")
+  .post(authMiddleware, productRoutes.addProductController);
+router
+  .route("/update-products")
+  .put(authMiddleware, productRoutes.updateProductController);
+router
+  .route("/delete-products")
+  .post(authMiddleware, productRoutes.deleteProductController);
 
 module.exports = router;

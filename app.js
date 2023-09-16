@@ -3,22 +3,30 @@ const morgan = require("morgan");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors({ origin: "http://51.20.2.8:3000" }));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(express.json());
 
-// Routes
 const productRoutes = require("./routes/productsRoutes");
 const userRoutes = require("./routes/userRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
 const billsRoutes = require("./routes/billsRoutes");
 
-app.use("/api/products", productRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/products", productRoutes);
 app.use("/api/bills", billsRoutes);
 
 // DB Connection
@@ -34,13 +42,12 @@ mongoose
     console.error("MongoDB connection error:", err.message);
   });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
 });
 
-// Error Handling Middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");

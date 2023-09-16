@@ -65,6 +65,9 @@ const Customers = () => {
     <Layout>
       <div style={styles.container}>
         <h2>All Customers </h2>
+        <div style={{
+          overflow:"auto"
+        }}>
         <table style={styles.table}>
           <thead>
             <tr style={styles.tableHeader}>
@@ -85,6 +88,7 @@ const Customers = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </Layout>
   );

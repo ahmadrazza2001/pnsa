@@ -61,12 +61,16 @@ const Bills = () => {
       border: "1px solid #ddd",
       borderBottom: "1px solid #ddd",
       textAlign: "left",
+      '@media (max-width: 600px)': {
+        padding: '4px',  // optional, for better mobile readability
+      },
     },
   };
   return (
     <Layout>
       <div style={styles.container}>
         <h2>All Bills </h2>
+        <div style={{overflow:"auto"}}>
         <table style={styles.table}>
           <thead>
             <tr style={styles.tableHeader}>
@@ -103,6 +107,7 @@ const Bills = () => {
             ))}
           </tbody>
         </table>
+        </div>
 
         {popModal && (
           <Modal

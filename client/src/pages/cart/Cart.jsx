@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/Layout";
-import {lHost } from "../../host";
+import { lHost } from "../../host";
 import "./cart.css";
 import {
   DeleteOutlined,
   PlusCircleOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal, Select, Table } from "antd";
+import { Button, Form, Input, message, Modal, Select } from "antd";
 import FormItem from "antd/lib/form/FormItem";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -98,8 +98,37 @@ const Cart = () => {
     setSubTotal(temp);
   }, [cartItems]);
 
+  // const handlerSubmit = async (value) => {
+  //   //console.log(value);
+  //   try {
+  //     const newObject = {
+  //       ...value,
+  //       cartItems,
+  //       subTotal,
+  //       tax: Number(((subTotal / 100) * 8).toFixed(2)),
+  //       totalAmount: Number(
+  //         (
+  //           Number(subTotal) + Number(((subTotal / 100) * 8).toFixed(2))
+  //         ).toFixed(2)
+  //       ),
+  //       userId: JSON.parse(localStorage.getItem("auth"))._id,
+  //     };
+  //     await axios.post(`${lHost}/api/bills/add-bills`, newObject, {
+  //       withCredentials: true,
+  //     });
+  //     message.success("Bill Generated!");
+  //     dispatch({
+  //       type: "CLEAR_CART",
+  //     });
+  //     navigate("/bills");
+  //   } catch (error) {
+  //     message.error(
+  //       `Error: ${error.response?.data?.error || "Unable to generate bill."}`
+  //     );
+  //     console.log(error);
+  //   }
+  // };
   const handlerSubmit = async (value) => {
-    //console.log(value);
     try {
       const newObject = {
         ...value,
@@ -111,19 +140,27 @@ const Cart = () => {
             Number(subTotal) + Number(((subTotal / 100) * 8).toFixed(2))
           ).toFixed(2)
         ),
-        userId: JSON.parse(localStorage.getItem("auth"))._id,
       };
-      await axios.post(`${lHost}/api/bills/add-bills`, newObject);
+      await axios.post(`${lHost}/api/bills/add-bills`, newObject, {
+        withCredentials: true,
+      });
+
       message.success("Bill Generated!");
       dispatch({
         type: "CLEAR_CART",
       });
       navigate("/bills");
     } catch (error) {
-      message.error("Error!");
+      message.error(
+        `${
+          error.response?.data?.error ||
+          "Unable to generate bill, try again later"
+        }`
+      );
       console.log(error);
     }
   };
+
   return (
     <Layout>
       <div style={{ margin: "0 5%", paddingTop: "2rem" }}>
@@ -166,13 +203,21 @@ const Cart = () => {
           <h2>
             Sub Total: <span>Rs.{subTotal.toFixed(2)}</span>
           </h2>
-          <Button onClick={() => setBillPopUp(true)} className="add-new">
+          <Button
+            onClick={() => setBillPopUp(true)}
+            style={{
+              color: "#fff",
+              background: "linear-gradient(45deg, #6C5B7B, #C06C84, #F67280)",
+              borderRadius: "5px",
+              border: "none",
+            }}
+          >
             Generate Bill
           </Button>
         </div>
         <Modal
           title="Create Invoice"
-          open={billPopUp}
+          visible={billPopUp}
           onCancel={() => setBillPopUp(false)}
           footer={false}
         >
@@ -206,7 +251,16 @@ const Cart = () => {
               </h3>
             </div>
             <div className="form-btn-add">
-              <Button htmlType="submit" className="add-new">
+              <Button
+                htmlType="submit"
+                style={{
+                  color: "#fff",
+                  background:
+                    "linear-gradient(45deg, #6C5B7B, #C06C84, #F67280)",
+                  borderRadius: "5px",
+                  border: "none",
+                }}
+              >
                 Generate Bill
               </Button>
             </div>
