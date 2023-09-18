@@ -1,3 +1,3 @@
 module.exports = {
-  lHost: "http://16.170.140.92:5001",
+  lHost: "http://16.16.211.82:5001",
 };
