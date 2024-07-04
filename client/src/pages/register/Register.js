@@ -22,7 +22,9 @@ const Register = () => {
   const handlerSubmit = async () => {
     try {
       dispatch({ type: "SHOW_LOADING" });
-      await axios.post(`${lHost}/api/user/signup`, formData);
+      await axios.post(`${lHost}/api/user/signup`, formData, {
+        withCredentials: true, // Ensure credentials are sent
+      });
       message.success("Your account has been created!");
       navigate("/login");
     } catch (error) {

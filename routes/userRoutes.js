@@ -18,6 +18,6 @@ router.get("/status", authMiddleware, (req, res) => {
 router.route("/get-profile").get(authMiddleware, userRoutes.getUserProfile);
 router
   .route("/update-profile")
-  .put(authMiddleware, userRoutes.updateUserProfile);
+  .post(authMiddleware, userRoutes.updateUserProfile);
 
 module.exports = router;

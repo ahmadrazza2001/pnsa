@@ -21,10 +21,16 @@ const Login = () => {
     try {
       dispatch({ type: "SHOW_LOADING" });
       const { email, password } = formData;
-      const res = await axios.post(`${lHost}/api/user/login`, {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${lHost}/api/user/login`,
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       dispatch({ type: "HIDE_LOADING" });
 

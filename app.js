@@ -11,7 +11,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://13.53.74.110:3000",
+    origin: "http://localhost:3000", // Specify your frontend origin
     credentials: true,
   })
 );
@@ -30,6 +30,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/bills", billsRoutes);
 
 // DB Connection
+mongoose.set("strictQuery", true);
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,

@@ -3,7 +3,6 @@ import axios from "axios";
 import { lHost } from "../../host";
 import { message, Modal, Button, Form, Input } from "antd";
 import Layout from "../../components/Layout";
-//import "./profile.css";
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
@@ -11,7 +10,9 @@ const Profile = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const { data } = await axios.get(`${lHost}/api/user/get-profile`);
+      const { data } = await axios.get(`${lHost}/api/user/get-profile`, {
+        // withCredentials: true,
+      });
       setUserData(data);
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -24,22 +25,20 @@ const Profile = () => {
 
   const handleEditSubmit = async (values) => {
     try {
-      await axios.put(`${lHost}/api/user/update-profile`, {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        companyName: values.companyName,
+      await axios.post(`${lHost}/api/user/update-profile`, values, {
+        withCredentials: true,
       });
 
       message.success("Profile Updated Successfully!");
-      setIsEditing(false); // close the modal
+      setIsEditing(false);
 
-      // Fetch updated profile
       fetchUserProfile();
     } catch (error) {
       console.error("Error updating user profile:", error);
       message.error("Error updating profile!");
     }
   };
+
   return (
     <Layout>
       <div style={styles.profile}>
@@ -91,7 +90,7 @@ const Profile = () => {
             <Modal
               title="Edit Profile"
               visible={isEditing}
-              onCancel={() => setIsEditing(false)} // close modal when cancel is clicked
+              onCancel={() => setIsEditing(false)}
               footer={null}
             >
               <Form
@@ -145,28 +144,26 @@ const styles = {
   },
   container: {
     display: "flex",
-    flexDirection: "column", // Stack vertically by default
+    flexDirection: "column",
     justifyContent: "space-between",
     padding: "2rem",
     maxWidth: "900px",
     margin: "auto",
     marginTop: "1%",
     "@media(min-width: 768px)": {
-      flexDirection: "row", // Align side by side
+      flexDirection: "row",
     },
   },
-
   leftCard: {
     flex: 1,
     border: "1px solid #e1e1e1",
     padding: "1rem",
-    marginBottom: "1rem", // Space between the cards when stacked vertically
+    marginBottom: "1rem",
     borderRadius: "5px",
     boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
     "@media(min-width: 768px)": {
-      // Larger screens
-      marginRight: "1rem", // Space on the right for larger screens
-      marginBottom: "0", // Reset the bottom margin
+      marginRight: "1rem",
+      marginBottom: "0",
     },
   },
   rightCard: {
